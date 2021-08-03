@@ -1,0 +1,8 @@
+﻿*~
+obj
+.vs
+bin
+Sounds/Music
+*.png
+*.wav
+*.mp3

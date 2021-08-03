@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Paddings To Texture</title>
+</head>
+<body>
+    <main>
+        <img />
+        <canvas></canvas>
+        <br />
+        <p>
+            <input type="file" />
+            <button>Add</button>
+        </p>
+    </main>
+    <script>
+        class AddPaddingsToTexture {
+            constructor() {
+                this.img = document.querySelector('img');
+                this.canvas = document.querySelector('canvas');
+                this.canvas2 = document.createElement('canvas');
+                this.input = document.querySelector('input');
+                this.button = document.querySelector('button');
+                this.button.addEventListener('click', event => {
+                    let file = this.input.files[0];
+                    if (!file) return;
+                    let reader = new FileReader();
+                    reader.onload = event0 => {
+                        let result = event0.target.result;
+                        this.img.src = result;
+                        let w0 = this.img.width;
+                        let h0 = this.img.height;
+                        let offsetx = Math.ceil(w0 / 16);
+                        let offsety = Math.ceil(h0 / 16);
+                        let w1 = w0 + offsetx * 2; // reserve space for paddings
+                        let h1 = h0 + offsety * 2;
+                        this.canvas.width = w1;
+                        this.canvas.height = h1;
+                        this.canvas2.width = w0;
+                        this.canvas2.height = h0;
+                        let context = this.canvas.getContext('2d');
+                        context.fillStyle = '#ff00ff';
+                        context.rect(0, 0, w1, h1);
+                        context.fill();
+                        let context2 = this.canvas2.getContext('2d');
+                        context2.drawImage(this.img, 0, 0);
+                        for (let i = offsetx; i >= 0; i--) {
+                            for (let j = offsety; j >= 0; j--) {
+                                let x0 = 16 * i, y0 = 16 * j;
+                                let chunk = context2.getImageData(x0, y0, 16, 16);
+                                context.putImageData(chunk, 18 * i, 18 * j);
+                            }
+                        }
+                    }
+                    reader.readAsDataURL(file);
+                });
+            }
+        }
+        var adder = new AddPaddingsToTexture();
+    </script>
+</body>
+</html>

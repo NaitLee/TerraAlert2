@@ -5,7 +5,7 @@ using Terraria.Utilities;
 
 namespace TerraAlert2.Items
 {
-    class ItemRocketeer : ModItem
+    class ItemConscript : ModItem
     {
         private static readonly int maxToSummon = 16;
         public override void SetDefaults()
@@ -23,33 +23,26 @@ namespace TerraAlert2.Items
             item.UseSound = SoundID.Item1;
             item.autoReuse = true;
             item.value = 50000;
-            item.shoot = ModContent.ProjectileType<Projectiles.Rocketeer>();
+            item.shoot = ModContent.ProjectileType<Projectiles.Conscript>();
             // item.buffType = ModContent.BuffType<Buffs.Rocketeer>();
         }
         public override bool CanUseItem(Player player)
         {
-            bool canUse = player.ownedProjectileCounts[ModContent.ProjectileType<Projectiles.Rocketeer>()] <= maxToSummon && player.GetModPlayer<TerraAlert2Player>().nearBarracks;
+            bool canUse = player.ownedProjectileCounts[ModContent.ProjectileType<Projectiles.Conscript>()] <= maxToSummon && player.GetModPlayer<TerraAlert2Player>().nearBarracks;
             if (canUse)
             {
                 WeightedRandom<string> sounds = new WeightedRandom<string>();
-                sounds.Add("irocata");
-                sounds.Add("irocatb");
-                sounds.Add("irocatc");
-                sounds.Add("irocatd");
-                sounds.Add("irocate");
-                sounds.Add("irocmoa");
-                sounds.Add("irocmob");
-                sounds.Add("irocmoc");
-                sounds.Add("irocmod");
-                sounds.Add("irocmoe");
-                sounds.Add("irocmof");
-                sounds.Add("irocsea");
-                sounds.Add("irocseb");
-                sounds.Add("irocsec");
-                sounds.Add("irocsed");
-                sounds.Add("irocsee");
-                sounds.Add("irocsef");
-                sounds.Add("irocseg");
+                sounds.Add("iconata");
+                sounds.Add("iconatb");
+                sounds.Add("iconatc");
+                sounds.Add("iconatd");
+                sounds.Add("iconmoa");
+                sounds.Add("iconmob");
+                sounds.Add("iconmoc");
+                sounds.Add("iconmod");
+                sounds.Add("iconsea");
+                sounds.Add("iconseb");
+                sounds.Add("iconsec");
                 Main.PlaySound(mod.GetLegacySoundSlot(SoundType.Custom, "Sounds/" + sounds.Get()).WithVolume(0.9f).WithPitchVariance(0.0f));
             }
             return canUse;
@@ -57,9 +50,8 @@ namespace TerraAlert2.Items
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.Wood, 8);
-            recipe.AddIngredient(ItemID.IronBar, 12);
-            recipe.AddTile(TileID.Anvils);
+            recipe.AddIngredient(ItemID.Wood, 24);
+            recipe.AddTile(TileID.WorkBenches);
             recipe.SetResult(this);
             recipe.AddRecipe();
         }

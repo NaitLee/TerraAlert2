@@ -1,11 +1,14 @@
 ﻿
 ItemName.ItemRocketeer=火箭飞行兵
+ItemName.ItemConscript=动员兵
 ItemTooltip.ItemRocketeer=在兵营附近才可以使用\n可召唤最多 16 位
+ItemTooltip.ItemConscript=在兵营附近才可以使用\n可召唤最多 16 位
 ItemName.AlliedBarracksOnWallItem=盟军兵营
 ItemTooltip.AlliedBarracksOnWallItem=放置在墙上
 ItemName.SovietBarracksOnWallItem=苏联兵营
 ItemTooltip.SovietBarracksOnWallItem=放置在墙上
 ProjectileName.Rocketeer=火箭飞行兵
+ProjectileName.Conscript=动员兵
 BuffName.AlliedBarracks=盟军兵营
 BuffName.SovietBarracks=苏联兵营
 BuffDescription.AlliedBarracks=增加 3 的召唤限制

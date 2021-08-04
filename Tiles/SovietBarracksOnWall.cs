@@ -8,38 +8,20 @@ using Terraria.Localization;
 
 namespace TerraAlert2.Tiles
 {
-    internal class SovietBarracksOnWallTile : ModTile
+    internal class SovietBarracksOnWallTile : BaseBuildingTile
     {
         public override void SetDefaults()
         {
-            Main.tileSolid[Type] = false;
-            Main.tileBlockLight[Type] = false;
-            Main.tileFrameImportant[Type] = true;
-            Main.tileWaterDeath[Type] = false;
-            Main.tileLavaDeath[Type] = false;
-            // TileID.Sets.FramesOnKillWall[Type] = true;
-            TileID.Sets.DrawsWalls[Type] = true;
-            TileObjectData.newTile.CopyFrom(TileObjectData.Style3x3Wall);
-            TileObjectData.newTile.UsesCustomCanPlace = true;
-            TileObjectData.newTile.Width = 6;
-            TileObjectData.newTile.Height = 11;
-            TileObjectData.newTile.Origin = new Point16(2, 5);
-            TileObjectData.newTile.CoordinateWidth = 16;
-            TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16 };
-            TileObjectData.addTile(Type);
-            ModTranslation name = CreateMapEntryName();
-            name.SetDefault("TerraAlert2_SovietBarracks");
-            name.AddTranslation(GameCulture.English, "TerraAlert2: SovietBarracks");
-            name.AddTranslation(GameCulture.Chinese, "泰拉警戒2：苏联兵营");
-            AddMapEntry(new Color(255, 0, 0), name);
+            base.SetDefaults();
+            NewTile(6, 11, new Point16(2, 5), 16, new int[] { 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16 });
+            CreateMapEntry("TerraAlert2_SovietBarracks", new System.Collections.Generic.Dictionary<GameCulture, string> {
+                { GameCulture.English, "TerraAlert2: SovietBarracks" },
+                { GameCulture.Chinese, "泰拉警戒2：苏联兵营" }
+            }, new Color(255, 0, 0));
         }
         public override void KillMultiTile(int i, int j, int frameX, int frameY)
         {
-            foreach (Player player in Main.player)
-            {
-                if (player.active) player.GetModPlayer<TerraAlert2Player>().nearBarracks = false;
-            }
-            Main.PlaySound(mod.GetLegacySoundSlot(SoundType.Custom, "Sounds/uselbuil").WithVolume(1.0f).WithPitchVariance(0.0f));
+            base.KillMultiTile(i, j, frameX, frameY);
             Item.NewItem(i * 16, j * 16, 72, 64, ModContent.ItemType<SovietBarracksOnWallItem>());
         }
         public override void NearbyEffects(int i, int j, bool closer)
@@ -54,29 +36,30 @@ namespace TerraAlert2.Tiles
             else
             {
                 modPlayer.nearBarracks = false;
-                // if (Main.LocalPlayer.HasBuff(buffType)) Main.LocalPlayer.DelBuff(buffType);  // Crashes the game
             }
         }
     }
-    internal class SovietBarracksOnWallItem : ModItem
+    internal class SovietBarracksOnWallItem : BaseBuildingItem
     {
         public override void SetDefaults()
         {
+            base.SetDefaults();
             item.width = 144;
             item.height = 128;
             item.createTile = ModContent.TileType<SovietBarracksOnWallTile>();
             item.rare = ItemRarityID.Pink;
             item.value = 200000;
-            item.maxStack = 1;
-            item.useTurn = true;
-            item.autoReuse = true;
-            item.useAnimation = 15;
-            item.useTime = 10;
-            item.useStyle = ItemUseStyleID.SwingThrow;
-            item.UseSound = mod.GetLegacySoundSlot(SoundType.Custom, "Sounds/uplace").WithVolume(1.0f).WithPitchVariance(0.0f);
-            item.consumable = true;
-            item.placeStyle = 0;
-            item.tileBoost = 40;
+        }
+        public override void AddRecipes()
+        {
+            ModRecipe recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ItemID.Wood, 16);
+            recipe.AddIngredient(ItemID.StoneBlock, 18);
+            recipe.AddIngredient(ItemID.IronBar, 24);
+            // recipe.AddIngredient(ItemID.RedBanner, 1);
+            recipe.AddTile(TileID.HeavyWorkBench);
+            recipe.SetResult(this);
+            recipe.AddRecipe();
         }
     }
 }

@@ -20,13 +20,13 @@ namespace TerraAlert2.Projectiles
         public override void SetDefaults()
         {
             // projectile.CloneDefaults(ProjectileID.UFOMinion);
-            aiType = ProjectileID.UFOMinion;
+            // aiType = ProjectileID.UFOMinion;
             projectile.netImportant = true;
             projectile.width = 94;
             projectile.height = 120;
             projectile.friendly = true;
             projectile.minion = true;
-            projectile.minionSlots = 1 / 8;
+            projectile.minionSlots = 0;
             // projectile.penetrate = -1;
             // projectile.timeLeft = 18000;
             projectile.tileCollide = false;
@@ -46,16 +46,8 @@ namespace TerraAlert2.Projectiles
                 projectile.frameCounter = 0;
                 projectile.frame = 0;
             }
-            projectile.direction = player.direction == 1 ? -1 : 1;
-            projectile.spriteDirection = projectile.direction;
-            projectile.velocity = (player.Center - projectile.Center + new Vector2((projectile.direction == 1 ? 32f : -32f) * (projectile.identity % 8), -32f * (projectile.identity / 8) * Main.rand.NextFloat(0.8f, 1.2f))) / 5f;
-            if (shootCD > 0)
-            {
-                shootCD--;
-                return;
-            }
             Vector2 move = Vector2.Zero;
-            float distance = 400f;
+            float distance = 800f;
             bool target = false;
             for (int k = 0; k < 200; k++)
             {
@@ -70,6 +62,17 @@ namespace TerraAlert2.Projectiles
                         target = true;
                     }
                 }
+            }
+            projectile.direction = target ? -1 : (player.direction == 1 ? -1 : 1);
+            projectile.spriteDirection = projectile.direction;
+            Vector2 positionToGo = target ?
+                move + new Vector2(-32f * (projectile.identity % 8), -32f * (projectile.identity / 8) * Main.rand.NextFloat(0.8f, 1.2f)) :
+                (player.Center - projectile.Center) + new Vector2((projectile.direction == 1 ? 32f : -32f) * (projectile.identity % 8), -32f * (projectile.identity / 8) * Main.rand.NextFloat(0.8f, 1.2f));
+            projectile.velocity = positionToGo / 6f;
+            if (shootCD > 0)
+            {
+                shootCD--;
+                return;
             }
             if (target)
             {
